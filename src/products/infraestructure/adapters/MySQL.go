@@ -20,8 +20,8 @@ func NewMySQL() (*MySQL, error) {
 }
 
 func (mysql *MySQL) Save(product *entities.Product) error {
-	query := "INSERT INTO products (name, price, description, deleted, stock) VALUES (?, ?, ?, ?, ?)"
-	result, err := mysql.conn.ExecutePreparedQuery(query, product.Name, product.Price, product.Descripcion, product.Deleted, product.Stock)
+	query := "INSERT INTO products (name, price, description, deleted, stock, user_id_fk) VALUES (?, ?, ?, ?, ?, ?)"
+	result, err := mysql.conn.ExecutePreparedQuery(query, product.Name, product.Price, product.Descripcion, product.Deleted, product.Stock, product.User_id)
 	if err != nil {
 		fmt.Println(err)
 		return err
@@ -63,7 +63,8 @@ func (mysql *MySQL) GetAll() ([]*entities.Product, error) {
 		var description string
 		var deleted bool
 		var stock int32
-		if err := rows.Scan(&product_id, &name, &price, &description, &deleted, &stock); err != nil {
+		var user_id int32
+		if err := rows.Scan(&product_id, &name, &price, &description, &deleted, &stock, &user_id); err != nil {
 			fmt.Println("error al escanear la fila: %w", err)
 		}
 		product := &entities.Product{
@@ -73,6 +74,7 @@ func (mysql *MySQL) GetAll() ([]*entities.Product, error) {
 			Descripcion: description,
 			Deleted:     deleted,
 			Stock:       stock,
+			User_id: user_id,
 		}
 		products = append(products, product)
 		
