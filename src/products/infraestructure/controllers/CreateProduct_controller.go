@@ -24,7 +24,7 @@ func (pc *CreateProductController) CreateProduct(c *gin.Context) {
         return
     }
     fmt.Println("Create Product")
-    createdProduct, err := pc.createProductUseCase.Execute(product.Name, product.Price, product.Descripcion, product.Stock)
+    createdProduct, err := pc.createProductUseCase.Execute(product.Name, product.Price, product.Descripcion, product.Stock, product.User_id)
     if err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
         return
@@ -38,6 +38,9 @@ func (pc *CreateProductController) CreateProduct(c *gin.Context) {
                 "price": createdProduct.Price,
                 "descripcion": createdProduct.Descripcion,
                 "stock": createdProduct.Stock,
+            },
+            "relationships": gin.H{
+                "user_id": createdProduct.User_id,
             },
         },
     }

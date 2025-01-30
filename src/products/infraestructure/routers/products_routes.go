@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RegisterProductRoutes(r *gin.Engine, createProductController *controllers.CreateProductController,listProductController *controllers.ListProductController, deleteProductController *controllers.DeleteProductController, updateProductController *controllers.UpdateController) {
+func ProductRoutes(r *gin.Engine, createProductController *controllers.CreateProductController,listProductController *controllers.ListProductController, deleteProductController *controllers.DeleteProductController, updateProductController *controllers.UpdateController) {
 	v1 := r.Group("/v1/products")
 	{
 		v1.POST("/create", createProductController.CreateProduct)

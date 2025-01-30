@@ -36,6 +36,9 @@ func (pc *ListProductController) GetAllProducts(c *gin.Context) {
                 "descripcion": product.Descripcion,
                 "stock": product.Stock,
             },
+            "relationships": gin.H{
+                "user_id": product.User_id,
+            },
         }
         response = append(response, productResponse)
     }

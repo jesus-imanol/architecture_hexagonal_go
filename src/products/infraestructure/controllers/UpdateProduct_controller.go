@@ -24,13 +24,13 @@ func (up *UpdateController) UpdateProduct(g *gin.Context) {
         g.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid product ID"})
         return
     }
-	idDelete := int32(id)
+	idUpdate := int32(id)
 	
 	if err := g.ShouldBindJSON(&productToUpdate); err != nil {
         g.JSON(http.StatusNotAcceptable, gin.H{"error": err.Error()})
         return
     }
-	if err2 := up.updateProductUseCase.Execute(idDelete, productToUpdate.Name, productToUpdate.Price, productToUpdate.Descripcion, productToUpdate.Stock); err2!= nil {
+	if err2 := up.updateProductUseCase.Execute(idUpdate, productToUpdate.Name, productToUpdate.Price, productToUpdate.Descripcion, productToUpdate.Stock); err2!= nil {
 		g.JSON(http.StatusNotFound, gin.H{
                 "detail": err2.Error(),
                 "type": "products",    
@@ -40,7 +40,7 @@ func (up *UpdateController) UpdateProduct(g *gin.Context) {
     response := gin.H{
 		"data": gin.H{
 			    "type": "products",
-                "id":   idDelete,
+                "id":   idUpdate,
                 "attributes": gin.H{
                     "name":  productToUpdate.Name,
                     "price": productToUpdate.Price,

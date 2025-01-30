@@ -12,14 +12,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Init() {
+func InitProducts(r *gin.Engine) {
 	// ! Crear producto
 	fmt.Println("Initializing")
 	ps, err := adapters.NewMySQL()
 	if err != nil {
 		panic(err)
 	}
-	r := gin.Default()
 
 	createProductUseCase := application.NewCreateProduct(ps)
 	createProduct_controller := controllers.NewCreateProductController(createProductUseCase)
@@ -32,9 +31,7 @@ func Init() {
 	//update productossss
 	updateProductUseCase := application.NewUpdateProduct(ps)
 	updateProduct_controller := controllers.NewUpdateProductController(updateProductUseCase)
-	routers.RegisterProductRoutes(r, createProduct_controller, listProduct_controller,deleteProduct_controller,updateProduct_controller)
 
-	if err := r.Run(); err != nil {
-		panic(err)
-	}
+	routers.ProductRoutes(r, createProduct_controller, listProduct_controller,deleteProduct_controller,updateProduct_controller)
+
 }
